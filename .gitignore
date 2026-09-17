@@ -33,6 +33,11 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Firebase project configuration supplied for Session 8
+/firebase.json
+/database.rules.json
+/lib/firebase_options.dart
+
 # Symbolication related
 app.*.symbols
 
