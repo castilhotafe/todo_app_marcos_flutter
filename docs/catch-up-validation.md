@@ -120,7 +120,8 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
 - The supplied Firebase project, rules and generated options files are present
   locally but explicitly ignored by Git. None of them is tracked.
 - Browse converts the remote `todos` map into Todo objects and uses each Firebase
-  child key as the Todo ID. An empty or missing `todos` node returns an empty list.
+  child key as the Todo ID. As directed by the tutorial, a missing `todos`
+  snapshot throws an exception because the expected shared structure is absent.
 - Add uses `push()` and writes one complete Todo beneath its generated child key.
   Read, edit and delete address only `todos/<id>`, and edit writes all four fields
   required by the supplied database structure.
@@ -129,5 +130,11 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
 - Static analysis found no issues, all 11 existing tests passed, and the Web
   release build completed. A real Web run initialized Firebase and displayed the
   existing remote Todos and pending count without changing shared records.
-- Manual add, reload, complete, reload and swipe-delete validation is still
-  required before Session 8 is considered complete.
+- Manual Chrome validation passed against the supplied Firebase project: a new
+  Todo persisted after reload, its completed state persisted after another
+  reload, and after swipe deletion it remained deleted after reloading again.
+- The material instructs students to download preconfigured Firebase files from
+  Blackboard. The remote project and its active security rules are therefore
+  treated as supplied course infrastructure, outside the student's
+  administration responsibilities. No Firebase configuration or rules were
+  deployed or changed during this work.

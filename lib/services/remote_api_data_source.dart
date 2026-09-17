@@ -44,7 +44,7 @@ class RemoteAPIDataSource implements IDataSource {
     final snapshot = await database.ref('todos').get();
 
     if (!snapshot.exists || snapshot.value == null) {
-      return [];
+      throw Exception('Todos snapshot does not exist');
     }
 
     final todoMap = Map<Object?, Object?>.from(snapshot.value as Map);
