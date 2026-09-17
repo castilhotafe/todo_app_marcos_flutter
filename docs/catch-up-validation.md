@@ -63,3 +63,20 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
   missing-record results, and saved edits/deletions after closing/reopening.
 - `flutter test`: 5 passed using actual SQLite files on the host.
   `flutter analyze`: no issues. Native UI integration remains a later step.
+
+## Session 6 — Get, refresh and Exercise 2
+
+- Registered the awaited SQLite data source with Get before starting the app.
+- `TodoList.refresh()` browses the registered source, replaces the in-memory
+  list and notifies Provider consumers. A RefreshIndicator exposes this action.
+- TodoList add, update, delete and removeAll now call the registered source and
+  refresh the UI from SQLite. Checkbox updates preserve the database ID.
+- A real SQLite model test verified registration, refresh, add, edit, delete and
+  reopening the database. Widget tests verified the add dialog, count, checkbox,
+  swipe deletion and removeAll through the data-source interface.
+- Final validation: `flutter analyze` reported no issues and all 7 tests passed.
+- The widget test uses a small in-memory IDataSource so widget timing does not
+  depend on native file I/O. SQLite behaviour is covered separately with actual
+  temporary database files.
+- The completed SQLite-integrated app has not yet been manually restarted on a
+  native target. The user's earlier macOS run occurred before SQLite integration.

@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:todo_app_marcos/services/i_data_source.dart';
 import 'package:todo_app_marcos/models/todo.dart';
 
 class TodoList extends ChangeNotifier {
@@ -9,25 +11,37 @@ class TodoList extends ChangeNotifier {
   UnmodifiableListView<Todo> get todos => UnmodifiableListView(_todos);
   int get todoCount => _todos.length;
 
-  void add(Todo todo) {
-    _todos.add(todo);
-    notifyListeners();
-  }
-
-  void removeAll() {
+  Future<void> refresh() async {
+    final source = Get.find<IDataSource>();
+    final saved = await source.browse();
     _todos.clear();
+    _todos.addAll(saved);
     notifyListeners();
   }
 
-  void remove(Todo todo) {
-    _todos.remove(todo);
-    notifyListeners();
+  Future<void> add(Todo todo) async {
+    final source = Get.find<IDataSource>();
+    await source.add(todo);
+    await refresh();
   }
 
-  void updateTodo(Todo todo) {
-    final index = _todos.indexWhere((element) => element.name == todo.name);
+  Future<void> removeAll() async {
+    final source = Get.find<IDataSource>();
+    for (final todo in List<Todo>.from(_todos)) {
+      await source.delete(todo);
+    }
+    await refresh();
+  }
 
-    _todos[index] = todo;
-    notifyListeners();
+  Future<void> remove(Todo todo) async {
+    final source = Get.find<IDataSource>();
+    await source.delete(todo);
+    await refresh();
+  }
+
+  Future<void> updateTodo(Todo todo) async {
+    final source = Get.find<IDataSource>();
+    await source.edit(todo);
+    await refresh();
   }
 }

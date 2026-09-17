@@ -17,8 +17,8 @@ class _TodoWidgetState extends State<TodoWidget> {
   Widget build(BuildContext context) {
     return Dismissible(
       key: GlobalKey(),
-      onDismissed: (direction) {
-        Provider.of<TodoList>(context, listen: false).remove(widget.todo);
+      onDismissed: (direction) async {
+        await Provider.of<TodoList>(context, listen: false).remove(widget.todo);
       },
       child: Container(
         margin: const EdgeInsets.all(8),
@@ -67,14 +67,15 @@ class _TodoWidgetState extends State<TodoWidget> {
               activeColor: Colors.green,
 
               side: const BorderSide(color: Colors.white, width: 2),
-              onChanged: (value) {
+              onChanged: (value) async {
                 final updatedTodo = Todo(
+                  id: widget.todo.id,
                   name: widget.todo.name,
                   description: widget.todo.description,
                   complete: value ?? false,
                 );
 
-                Provider.of<TodoList>(
+                await Provider.of<TodoList>(
                   context,
                   listen: false,
                 ).updateTodo(updatedTodo);
