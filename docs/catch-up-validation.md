@@ -39,3 +39,18 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
   reported Xcode setup issues and no mobile emulators, and CoreSimulator requests
   failed with connection/permission errors. These checks do not establish whether
   the user's IDE can run a native target outside this environment.
+
+## Session 6 — SQLite initialisation and mapping
+
+- The user confirmed that the pre-SQLite app built and opened on macOS outside
+  the agent's restricted build environment. This establishes a native target,
+  not yet SQLite behaviour in that app.
+- Added the SQLite file/table, awaited construction, Todo ID and map conversions,
+  and browse. The remaining BREAD methods are explicitly unfinished at this
+  learning checkpoint and are not yet connected to the UI.
+- Actual SQLite host tests verified table columns, file creation, reading a saved
+  row after closing/reopening, generated ID, and bool/integer conversion.
+- Tests use sqflite_common_ffi as a development-only backend, as documented by
+  its maintainer: https://pub.dev/packages/sqflite_common_ffi . This is real SQL
+  and file storage, but does not certify the native sqflite plugin integration.
+- `flutter test`: 4 passed. `flutter analyze`: no issues found.
