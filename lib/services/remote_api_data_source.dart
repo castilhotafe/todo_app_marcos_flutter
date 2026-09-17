@@ -26,8 +26,23 @@ class RemoteAPIDataSource implements IDataSource {
   }
 
   @override
-  Future<List<Todo>> browse() {
-    throw UnimplementedError();
+  Future<List<Todo>> browse() async {
+    final snapshot = await database.ref('todos').get();
+
+    if (!snapshot.exists || snapshot.value == null) {
+      return [];
+    }
+
+    final todoMap = Map<Object?, Object?>.from(snapshot.value as Map);
+    final todos = <Todo>[];
+
+    for (final entry in todoMap.entries) {
+      final values = Map<String, dynamic>.from(entry.value as Map);
+      values['id'] = entry.key.toString();
+      todos.add(Todo.fromMap(values));
+    }
+
+    return todos;
   }
 
   @override
