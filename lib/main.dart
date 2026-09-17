@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app_marcos/services/hive_data_source.dart';
 import 'package:todo_app_marcos/services/i_data_source.dart';
+import 'package:todo_app_marcos/services/remote_api_data_source.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_marcos/models/todo.dart';
@@ -10,7 +10,7 @@ import 'package:todo_app_marcos/views/todo_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.putAsync<IDataSource>(() => HiveDataSource.createAsync());
+  await Get.putAsync<IDataSource>(() => RemoteAPIDataSource.createAsync());
   final model = TodoList();
   await model.refresh();
   runApp(

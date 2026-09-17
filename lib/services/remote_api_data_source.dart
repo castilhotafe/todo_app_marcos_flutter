@@ -21,8 +21,22 @@ class RemoteAPIDataSource implements IDataSource {
   }
 
   @override
-  Future<bool> add(Todo model) {
-    throw UnimplementedError();
+  Future<bool> add(Todo model) async {
+    final reference = database.ref('todos').push();
+    final id = reference.key;
+
+    if (id == null) {
+      return false;
+    }
+
+    final todo = Todo(
+      id: id,
+      name: model.name,
+      description: model.description,
+      complete: model.complete,
+    );
+    await reference.set(todo.toMap());
+    return true;
   }
 
   @override
@@ -46,17 +60,38 @@ class RemoteAPIDataSource implements IDataSource {
   }
 
   @override
-  Future<bool> delete(Todo model) {
-    throw UnimplementedError();
+  Future<bool> delete(Todo model) async {
+    if (model.id.isEmpty) {
+      return false;
+    }
+
+    await database.ref('todos/${model.id}').remove();
+    return true;
   }
 
   @override
-  Future<bool> edit(Todo model) {
-    throw UnimplementedError();
+  Future<bool> edit(Todo model) async {
+    if (model.id.isEmpty) {
+      return false;
+    }
+
+    await database.ref('todos/${model.id}').set(model.toMap());
+    return true;
   }
 
   @override
-  Future<Todo?> read(String id) {
-    throw UnimplementedError();
+  Future<Todo?> read(String id) async {
+    if (id.isEmpty) {
+      return null;
+    }
+
+    final snapshot = await database.ref('todos/$id').get();
+    if (!snapshot.exists || snapshot.value == null) {
+      return null;
+    }
+
+    final values = Map<String, dynamic>.from(snapshot.value as Map);
+    values['id'] = id;
+    return Todo.fromMap(values);
   }
 }

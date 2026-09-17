@@ -112,3 +112,22 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
 - Manual macOS validation passed: a Todo persisted after restart, its completed
   state persisted after another restart, and a swiped deletion remained deleted
   after reopening the app.
+
+## Session 8 — Firebase Realtime Database
+
+- Added the current `firebase_core` and `firebase_database` packages requested by
+  the tutorial and initialized Firebase with the supplied platform options.
+- The supplied Firebase project, rules and generated options files are present
+  locally but explicitly ignored by Git. None of them is tracked.
+- Browse converts the remote `todos` map into Todo objects and uses each Firebase
+  child key as the Todo ID. An empty or missing `todos` node returns an empty list.
+- Add uses `push()` and writes one complete Todo beneath its generated child key.
+  Read, edit and delete address only `todos/<id>`, and edit writes all four fields
+  required by the supplied database structure.
+- The app now registers RemoteAPIDataSource through the existing IDataSource
+  contract before TodoList performs its initial refresh.
+- Static analysis found no issues, all 11 existing tests passed, and the Web
+  release build completed. A real Web run initialized Firebase and displayed the
+  existing remote Todos and pending count without changing shared records.
+- Manual add, reload, complete, reload and swipe-delete validation is still
+  required before Session 8 is considered complete.
