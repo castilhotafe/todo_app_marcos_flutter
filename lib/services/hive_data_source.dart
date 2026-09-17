@@ -29,18 +29,44 @@ class HiveDataSource implements IDataSource {
     return _box.values.toList();
   }
 
-  // These operations are completed in Session 7 Exercise 1.
   @override
-  Future<bool> add(Todo model) => throw UnimplementedError();
+  Future<bool> add(Todo model) async {
+    final key = await _box.add(model);
+    final saved = Todo(
+      id: key.toString(),
+      name: model.name,
+      description: model.description,
+      complete: model.complete,
+    );
+    await _box.put(key, saved);
+    return true;
+  }
 
   @override
-  Future<bool> delete(Todo model) => throw UnimplementedError();
+  Future<bool> delete(Todo model) async {
+    final key = int.tryParse(model.id);
+    if (key == null || !_box.containsKey(key)) {
+      return false;
+    }
+    await _box.delete(key);
+    return true;
+  }
 
   @override
-  Future<bool> edit(Todo model) => throw UnimplementedError();
+  Future<bool> edit(Todo model) async {
+    final key = int.tryParse(model.id);
+    if (key == null || !_box.containsKey(key)) {
+      return false;
+    }
+    await _box.put(key, model);
+    return true;
+  }
 
   @override
-  Future<Todo?> read(String id) => throw UnimplementedError();
+  Future<Todo?> read(String id) async {
+    final key = int.tryParse(id);
+    return key == null ? null : _box.get(key);
+  }
 
   Future<void> close() => _box.close();
 }

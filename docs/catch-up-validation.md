@@ -97,3 +97,15 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
   browse implementation behind the existing IDataSource contract.
 - A real Hive storage test wrote a Todo, closed the data source, reopened it and
   retrieved the saved Todo through `browse()`.
+
+## Session 7 — Exercise 1: Hive BREAD and IDs
+
+- Add now uses Hive's generated integer key, stores that key in `Todo.id`, then
+  uses the ID for read, edit and delete.
+- Real Hive tests cover duplicate names, generated IDs, missing IDs, editing,
+  deletion and persistence after closing/reopening the box.
+- The app registration now supplies HiveDataSource through the same IDataSource
+  contract already used by TodoList and Provider.
+- A TodoList integration test verified add, edit, refresh after reopening Hive,
+  and delete. Final Session 7 validation: `flutter analyze` reported no issues
+  and all tests passed.
