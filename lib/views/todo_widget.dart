@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app_marcos/models/todo.dart';
+import 'package:todo_app_marcos/models/todo_list.dart';
 
 class TodoWidget extends StatefulWidget {
   const TodoWidget({required this.todo, super.key});
+
   final Todo todo;
 
   @override
@@ -22,7 +25,10 @@ class _TodoWidgetState extends State<TodoWidget> {
           ),
           fit: BoxFit.cover,
         ),
-        border: Border.all(color: Color.fromARGB(255, 225, 225, 225), width: 8),
+        border: Border.all(
+          color: const Color.fromARGB(255, 225, 225, 225),
+          width: 8,
+        ),
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
           BoxShadow(
@@ -48,6 +54,26 @@ class _TodoWidgetState extends State<TodoWidget> {
           Text(
             widget.todo.description,
             style: const TextStyle(color: Colors.white, fontSize: 12),
+          ),
+          Checkbox(
+            value: widget.todo.complete,
+            checkColor: Colors.white,
+
+            activeColor: Colors.green,
+
+            side: const BorderSide(color: Colors.white, width: 2),
+            onChanged: (value) {
+              final updatedTodo = Todo(
+                name: widget.todo.name,
+                description: widget.todo.description,
+                complete: value ?? false,
+              );
+
+              Provider.of<TodoList>(
+                context,
+                listen: false,
+              ).updateTodo(updatedTodo);
+            },
           ),
         ],
       ),

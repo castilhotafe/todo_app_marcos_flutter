@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app_marcos/models/todo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_marcos/models/todo.dart';
 import 'package:todo_app_marcos/models/todo_list.dart';
 import 'package:todo_app_marcos/views/todo_widget.dart';
 
@@ -32,11 +32,9 @@ class TodoHomePage extends StatefulWidget {
 }
 
 class _TodoHomePageState extends State<TodoHomePage> {
-  // Controllers para pegar o texto digitado.
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  // Abre o popup para adicionar um novo todo.
   void _openAddTodo() {
     showDialog(
       context: context,
@@ -64,6 +62,9 @@ class _TodoHomePageState extends State<TodoHomePage> {
 
                   Provider.of<TodoList>(context, listen: false).add(todo);
 
+                  nameController.clear();
+                  descriptionController.clear();
+
                   Navigator.pop(context);
                 },
                 child: const Text('Add'),
@@ -78,7 +79,24 @@ class _TodoHomePageState extends State<TodoHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Todo List')),
+      appBar: AppBar(
+        title: const Text('Todo List'),
+        actions: [
+          Consumer<TodoList>(
+            builder: (context, model, child) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 25),
+                child: Center(
+                  child: Text(
+                    '${model.todos.where((todo) => !todo.complete).length} to do',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: Consumer<TodoList>(
         builder: (context, model, child) {
           return ListView.builder(
