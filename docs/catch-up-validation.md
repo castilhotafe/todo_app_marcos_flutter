@@ -109,3 +109,6 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
 - A TodoList integration test verified add, edit, refresh after reopening Hive,
   and delete. Final Session 7 validation: `flutter analyze` reported no issues
   and all tests passed.
+- Manual macOS validation passed: a Todo persisted after restart, its completed
+  state persisted after another restart, and a swiped deletion remained deleted
+  after reopening the app.
