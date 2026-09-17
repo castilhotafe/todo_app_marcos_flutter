@@ -26,3 +26,16 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
 - Database structure change demonstration, tracing/runtime values, emulator and
   physical-device execution.
 - Appendix A device specifications were not supplied in the reference materials.
+
+## Session 6 — Datasource Interface
+
+- Added the tutorial's asynchronous IDataSource BREAD contract. `read` can return
+  null when no Todo has the requested ID. No database or new package is present
+  at this checkpoint, and the app still uses its Session 5 in-memory model.
+- Formatting passed; `flutter analyze`: no issues; existing `flutter test`: 2
+  passed. This validates the contract's compilation and the unchanged app, not
+  SQLite persistence.
+- Native runtime checks are not yet usable from this environment: Flutter doctor
+  reported Xcode setup issues and no mobile emulators, and CoreSimulator requests
+  failed with connection/permission errors. These checks do not establish whether
+  the user's IDE can run a native target outside this environment.
