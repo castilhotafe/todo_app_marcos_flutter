@@ -78,5 +78,7 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
 - The widget test uses a small in-memory IDataSource so widget timing does not
   depend on native file I/O. SQLite behaviour is covered separately with actual
   temporary database files.
-- The completed SQLite-integrated app has not yet been manually restarted on a
-  native target. The user's earlier macOS run occurred before SQLite integration.
+- Manual macOS validation passed after SQLite integration: the user created a
+  Todo through the UI, closed the app, reopened it and confirmed the Todo was
+  restored. The pre-existing NetworkImage still failed to load, while SQLite
+  persistence behaved correctly.
