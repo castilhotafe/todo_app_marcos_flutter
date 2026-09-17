@@ -90,3 +90,10 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
 - A real Hive box test wrote the binary object, closed the box, reopened it and
   recovered every Todo field correctly.
 - `flutter analyze`: no issues. Todo adapter test: passed.
+
+## Session 7 — Hive initialisation and browse
+
+- Added the awaited Hive factory, adapter registration, typed `todos` box and
+  browse implementation behind the existing IDataSource contract.
+- A real Hive storage test wrote a Todo, closed the data source, reopened it and
+  retrieved the saved Todo through `browse()`.
