@@ -82,3 +82,11 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
   Todo through the UI, closed the app, reopened it and confirmed the Todo was
   restored. The pre-existing NetworkImage still failed to load, while SQLite
   persistence behaved correctly.
+
+## Session 7 — Hive adapter
+
+- Added the HiveType/HiveField annotations and the manual TodoAdapter shown by
+  the tutorial, with stable field numbers for ID, name, description and status.
+- A real Hive box test wrote the binary object, closed the box, reopened it and
+  recovered every Todo field correctly.
+- `flutter analyze`: no issues. Todo adapter test: passed.
