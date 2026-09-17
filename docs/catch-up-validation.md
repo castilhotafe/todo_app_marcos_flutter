@@ -54,3 +54,12 @@ Session 5 baseline remains `3e8aa90`; session branches are cumulative.
   its maintainer: https://pub.dev/packages/sqflite_common_ffi . This is real SQL
   and file storage, but does not certify the native sqflite plugin integration.
 - `flutter test`: 4 passed. `flutter analyze`: no issues found.
+
+## Session 6 — Exercise 1: BREAD
+
+- Implemented add/read/edit/delete against SQLite with parameterised IDs.
+- Tests verified generated IDs (ignoring an input ID when inserting), separate
+  records with identical names, apostrophes in text, editing just the selected ID,
+  missing-record results, and saved edits/deletions after closing/reopening.
+- `flutter test`: 5 passed using actual SQLite files on the host.
+  `flutter analyze`: no issues. Native UI integration remains a later step.

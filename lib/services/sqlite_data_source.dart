@@ -33,18 +33,47 @@ class SQLiteDataSource implements IDataSource {
     return rows.map((row) => Todo.fromMap(row)).toList();
   }
 
-  // These BREAD operations are completed in Session 6 Exercise 1.
   @override
-  Future<bool> add(Todo model) => throw UnimplementedError();
+  Future<bool> add(Todo model) async {
+    final values = model.toMap();
+    values.remove('id');
+    final id = await _database.insert('todos', values);
+    return id > 0;
+  }
 
   @override
-  Future<bool> delete(Todo model) => throw UnimplementedError();
+  Future<bool> delete(Todo model) async {
+    final count = await _database.delete(
+      'todos',
+      where: 'id = ?',
+      whereArgs: [model.id],
+    );
+    return count == 1;
+  }
 
   @override
-  Future<bool> edit(Todo model) => throw UnimplementedError();
+  Future<bool> edit(Todo model) async {
+    final values = model.toMap();
+    values.remove('id');
+    final count = await _database.update(
+      'todos',
+      values,
+      where: 'id = ?',
+      whereArgs: [model.id],
+    );
+    return count == 1;
+  }
 
   @override
-  Future<Todo?> read(String id) => throw UnimplementedError();
+  Future<Todo?> read(String id) async {
+    final rows = await _database.query(
+      'todos',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : Todo.fromMap(rows.first);
+  }
 
   Future<void> close() => _database.close();
 }

@@ -73,4 +73,46 @@ void main() {
       );
     }
   });
+  test(
+    'BREAD keeps duplicate names independent and persists edits/deletions',
+    () async {
+      final input = Todo(
+        id: '999',
+        name: "Read O'Reilly",
+        description: 'First',
+      );
+      expect(await source.add(input), isTrue);
+      expect(
+        await source.add(Todo(name: input.name, description: 'Second')),
+        isTrue,
+      );
+      final todos = await source.browse();
+      expect(todos, hasLength(2));
+      expect(todos[0].id, isNot(todos[1].id));
+      expect(todos[0].id, isNot('999'));
+      expect((await source.read(todos[0].id))!.description, 'First');
+      expect(await source.read('999'), isNull);
+
+      final updated = Todo(
+        id: todos[1].id,
+        name: todos[1].name,
+        description: 'Second, completed',
+        complete: true,
+      );
+      expect(await source.edit(updated), isTrue);
+      expect((await source.read(todos[0].id))!.complete, isFalse);
+      expect((await source.read(todos[1].id))!.complete, isTrue);
+      expect(await source.delete(todos[0]), isTrue);
+      expect(await source.delete(todos[0]), isFalse);
+      expect(await source.edit(todos[0]), isFalse);
+
+      await source.close();
+      source = await SQLiteDataSource.createAsync(databasePath: path);
+      final saved = (await source.browse()).single;
+      expect(saved.id, updated.id);
+      expect(saved.description, 'Second, completed');
+      expect(saved.complete, isTrue);
+      expect(await source.read(todos[0].id), isNull);
+    },
+  );
 }
