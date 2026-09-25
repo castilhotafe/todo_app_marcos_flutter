@@ -1,7 +1,6 @@
 import 'package:todo_app_marcos/models/todo.dart';
 import 'package:todo_app_marcos/services/i_data_source.dart';
 
-// In-memory test data; the application still uses its real data source.
 class MockDataSource implements IDataSource {
   final List<Todo> _todos = [];
   int _nextId = 1;
